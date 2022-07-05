@@ -20,10 +20,13 @@ app.use(methodOverride((req, res) => {
     }
 }))
 
+app.use(express.urlencoded({extended: true}))
+
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use((req,res, next) => {
+    console.log("req in sign in cookie: ", req.cookies)
     const username = req.cookies.username || '';
 
     if (username) {
@@ -44,9 +47,15 @@ app.get('/', (request, response) => {
 app.get('/sign_in', (req, res) => {
     const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24
     const username = req.body.username
+    console.log("Cookie username: ", username)
     res.cookie('username', username, {maxAge: COOKIE_MAX_AGE})
     // res.redirect('/')
     res.render('sign_in')
+    // res.redirect('/')
+})
+
+app.get('/index', (req, res) => {
+    res.render('index')
 })
 
 // app.get('/sign_in', (req, res) => {
