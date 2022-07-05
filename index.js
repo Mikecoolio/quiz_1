@@ -30,18 +30,18 @@ app.use((req,res, next) => {
   next();
 })
 
+const cluckrRouter = require('./routes/cluckr')
+app.use('/cluckr', cluckrRouter)
+
+app.get('/', (request, response) => {
+    // response.send("<h1>Hello World</h1>")
+    response.render('home')
+})
+
 const PORT = 5245
 const HOST = 'localhost'
 app.listen(PORT, HOST, () => {
   console.log(`The Cluckr server is listening at ${HOST}:${PORT}`);
 })
 
-// Part 1: Application Skeleton
-// Value: 9%
-
-// Build an Express app with the following:
-
-// Logging middleware installed and setup.
-// Nodemon tool installed as a development dependency and made useable as a NPM script.
-// Static assets middleware setup.
 
