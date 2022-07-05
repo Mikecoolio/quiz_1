@@ -14,20 +14,23 @@ app.use(express.json())
 const methodOverride = require('method-override');
 
 app.use(methodOverride((req, res) => {
-  if (req.body && req.body.__method) {
-    const method = req.body.__method
-    return method
-  }
+    if (req.body && req.body.__method) {
+        const method = req.body.__method
+        return method
+    }
 }))
 
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use((req,res, next) => {
-  const username = req.cookies.username || '';
+    const username = req.cookies.username || '';
 
-  res.locals.username = username;
-  next();
+    if (username) {
+        res.locals.username = username;
+        console.log(`Cookies in use, ${username} has signed in!}`)
+    }
+    next();
 })
 
 const cluckrRouter = require('./routes/cluckr')
@@ -38,10 +41,30 @@ app.get('/', (request, response) => {
     response.render('home')
 })
 
+app.get('/sign_in', (req, res) => {
+    const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24
+    const username = req.body.username
+    res.cookie('username', username, {maxAge: COOKIE_MAX_AGE})
+    // res.redirect('/')
+    res.render('sign_in')
+})
+
+// app.get('/sign_in', (req, res) => {
+//     const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24
+//     const username = req.body.username
+//     res.cookie('username', username, {maxAge: COOKIE_MAX_AGE})
+//     res.redirect('/')
+// })
+
+// app.post('/sign_out', (req, res) =>{
+//     res.clearCookie('username')
+//     res.redirect('/')
+// })
+
 const PORT = 5245
 const HOST = 'localhost'
 app.listen(PORT, HOST, () => {
-  console.log(`The Cluckr server is listening at ${HOST}:${PORT}`);
+    console.log(`The Cluckr server is listening at ${HOST}:${PORT}`);
 })
 
 
