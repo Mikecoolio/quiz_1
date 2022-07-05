@@ -25,13 +25,14 @@ app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use((req,res, next) => {
-    console.log("req in sign in cookie: ", req.cookies)
-    const username = req.cookies.username || '';
+app.use((req, res, next) => {
+    const username = req.cookies.username
+    //res.locals are properties set and are available in any views
+    //almost like a global variable
+    res.locals.username = '';
 
-    if (username) {
+    if(username){
         res.locals.username = username;
-        console.log(`Cookies in use, ${username} has signed in!}`)
     }
     next();
 })
@@ -44,31 +45,30 @@ app.get('/', (request, response) => {
     response.render('home')
 })
 
-app.get('/sign_in', (req, res) => {
-    const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24
-    const username = req.body.username
-    console.log("Cookie username: ", username)
-    res.cookie('username', username, {maxAge: COOKIE_MAX_AGE})
-    // res.redirect('/')
-    res.render('sign_in')
-    // res.redirect('/')
+app.get('/sign_in', (request, response) => {
+    response.render('sign_in')
 })
 
 app.get('/index', (req, res) => {
     res.render('index')
 })
 
-// app.get('/sign_in', (req, res) => {
-//     const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24
-//     const username = req.body.username
-//     res.cookie('username', username, {maxAge: COOKIE_MAX_AGE})
-//     res.redirect('/')
-// })
+app.post(('/process_sign_in'), (req, res) => {
+    const username = req.body.username
 
-// app.post('/sign_out', (req, res) =>{
-//     res.clearCookie('username')
-//     res.redirect('/')
-// })
+    if (username) {
+        console.log("Cookie username: ", username)
+        res.cookie('username', username)
+        res.redirect('index')
+    } else {
+        res.redirect('sign_in')
+    }
+})
+
+app.get('/sign_out', (req, res) => {
+    res.clearCookie('username')
+    res.redirect('/sign_in')
+})
 
 const PORT = 5245
 const HOST = 'localhost'
