@@ -46,7 +46,8 @@ app.get('/', (request, response) => {
 })
 
 app.get('/sign_in', (request, response) => {
-    response.render('sign_in')
+    console.log("The username from cookies is: ", request.cookies.username)
+    response.render('sign_in', {username: request.cookies.username})
 })
 
 app.get('/index', (req, res) => {
@@ -71,7 +72,8 @@ app.post(('/process_sign_in'), (req, res) => {
 })
 
 app.get(('/pressed_cluck!_button'), (req, res) => {
-    // res.redirect('/new')
+    
+    console.log()
     res.render('clucks/new', {cluck: false})
 })
 
