@@ -53,16 +53,26 @@ app.get('/index', (req, res) => {
     res.render('index')
 })
 
+app.get('/new', (req, res) => {
+    res.render('new')
+})
+
 app.post(('/process_sign_in'), (req, res) => {
     const username = req.body.username
+    const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24
 
     if (username) {
         console.log("Cookie username: ", username)
-        res.cookie('username', username)
+        res.cookie('username', username, {maxAge: COOKIE_MAX_AGE})
         res.redirect('index')
     } else {
         res.redirect('sign_in')
     }
+})
+
+app.get(('/pressed_cluck!_button'), (req, res) => {
+    // res.redirect('/new')
+    res.render('clucks/new', {cluck: false})
 })
 
 app.get('/sign_out', (req, res) => {
