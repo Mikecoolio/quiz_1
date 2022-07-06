@@ -5,9 +5,6 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs')
-
 app.use(logger('dev'))
 app.use(express.json())
 
@@ -37,6 +34,9 @@ app.use((req, res, next) => {
     next();
 })
 
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs')
+
 const cluckrRouter = require('./routes/cluckr');
 const { request } = require('http');
 app.use('/cluckr', cluckrRouter)
@@ -50,7 +50,6 @@ app.get('/', (request, response) => {
 })
 
 app.get('/sign_in', (request, response) => {
-    console.log("The username from cookies is: ", request.cookies.username)
     response.render('sign_in', {username: request.cookies.username})
 })
 
@@ -76,8 +75,6 @@ app.get(('/new_cluck'), (req, res) => {
     let username = req.cookies.username || '' 
 
     if (username != '' && username != undefined) {
-        console.log("req.body inside index.js", req.body)
-
         res.render('clucks/new')
     } else {
         res.redirect('sign_in')
@@ -85,8 +82,9 @@ app.get(('/new_cluck'), (req, res) => {
 })
 
 app.get('/submit_cluck', (req, res) => {
-    console.log("req.body inside submit_cluck in index.js", req.body)
-
+    clucks = req.body
+    console.log("clucks inside submit_cluck", clucks)
+    // unsure of where the request came from, from here
     res.redirect('clucks')
 })
 
