@@ -1,18 +1,21 @@
 <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
       <img class="card-img-top" src="/public/css/images/chicken.svg" alt="Chicken Logo">
-      <form action="pressed_cluck!_button" class="d-flex">
+      <form action="new_cluck" class="d-flex">
         <button class="btn btn-outline-success" type="submit" >Cluck!</button>
       </form>
       <form action="/sign_in" class="d-flex">
         <% if (username) { %>
           <span><%- username %> </span>
-        <% } else { %>
-        <button class="btn btn-outline-success" type="submit">Sign_in</button>
-        <% } %> 
       </form>
       <form action="/sign_out" class="d-flex">
         <button class="btn btn-outline-success" type="submit">Sign_out</button>
+      </form>
+        <% } else { %>
+      <form action="/sign_in" class="d-flex">
+        <button class="btn btn-outline-success" type="submit">Sign_in</button>
+      </form>
+        <% } %> 
       </form>
     </div>
 </nav>

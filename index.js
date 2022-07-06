@@ -37,11 +37,16 @@ app.use((req, res, next) => {
     next();
 })
 
-const cluckrRouter = require('./routes/cluckr')
+const cluckrRouter = require('./routes/cluckr');
+const { request } = require('http');
 app.use('/cluckr', cluckrRouter)
 
+app.get('/clucks', (req, res) => {
+    res.render('clucks')
+})
+
 app.get('/', (request, response) => {
-    response.render('home')
+    response.redirect('clucks')
 })
 
 app.get('/sign_in', (request, response) => {
@@ -49,9 +54,6 @@ app.get('/sign_in', (request, response) => {
     response.render('sign_in', {username: request.cookies.username})
 })
 
-app.get('/index', (req, res) => {
-    res.render('index')
-})
 
 app.get('/new', (req, res) => {
     res.render('new')
@@ -64,20 +66,28 @@ app.post(('/process_sign_in'), (req, res) => {
     if (username) {
         console.log("Cookie username: ", username)
         res.cookie('username', username, {maxAge: COOKIE_MAX_AGE})
-        res.redirect('index')
+        res.redirect('clucks')
     } else {
         res.redirect('sign_in')
     }
 })
 
-app.get(('/pressed_cluck!_button'), (req, res) => {
+app.get(('/new_cluck'), (req, res) => {
     let username = req.cookies.username || '' 
 
     if (username != '' && username != undefined) {
+        console.log("req.body inside index.js", req.body)
+
         res.render('clucks/new')
     } else {
         res.redirect('sign_in')
     }
+})
+
+app.get('/submit_cluck', (req, res) => {
+    console.log("req.body inside submit_cluck in index.js", req.body)
+
+    res.redirect('clucks')
 })
 
 app.get('/sign_out', (req, res) => {

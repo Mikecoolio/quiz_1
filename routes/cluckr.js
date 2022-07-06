@@ -15,6 +15,19 @@ const router = express.Router()
 // The cluck should get its `username` field from the `username` in the cookies.
 // A successfully submitted cluck redirects the user to the index page.
 
-
+router.post('/new_cluck', (req, res) => {
+    knex('clucks')
+    .insert({
+        image_url: req.body.image_url,
+        content: req.body.content,
+        created_at: req.body.created_at,
+        updated_at: req.body.updated_at
+    })
+    .returning('*')
+    .then( (cluck) => {
+        console.log("cluck should be posted:", cluck)
+        res.redirect('/clucks')
+    })
+})
 
 module.exports = router;
