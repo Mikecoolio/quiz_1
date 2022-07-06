@@ -41,7 +41,6 @@ const cluckrRouter = require('./routes/cluckr')
 app.use('/cluckr', cluckrRouter)
 
 app.get('/', (request, response) => {
-    // response.send("<h1>Hello World</h1>")
     response.render('home')
 })
 
@@ -72,9 +71,13 @@ app.post(('/process_sign_in'), (req, res) => {
 })
 
 app.get(('/pressed_cluck!_button'), (req, res) => {
-    
-    console.log()
-    res.render('clucks/new', {cluck: false})
+    let username = req.cookies.username || '' 
+
+    if (username != '' && username != undefined) {
+        res.render('clucks/new')
+    } else {
+        res.redirect('sign_in')
+    }
 })
 
 app.get('/sign_out', (req, res) => {
