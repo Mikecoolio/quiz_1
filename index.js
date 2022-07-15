@@ -42,11 +42,12 @@ const { request } = require('http');
 app.use('/cluckr', cluckrRouter)
 
 app.get('/clucks', (req, res) => {
+    console.log(req.body.clucks)
     res.render('clucks')
 })
 
 app.get('/', (request, response) => {
-    response.redirect('clucks')
+    response.redirect('sign_in')
 })
 
 app.get('/sign_in', (request, response) => {
@@ -65,16 +66,17 @@ app.post(('/process_sign_in'), (req, res) => {
     if (username) {
         console.log("Cookie username: ", username)
         res.cookie('username', username, {maxAge: COOKIE_MAX_AGE})
-        res.redirect('clucks')
+        res.redirect('/')
     } else {
         res.redirect('sign_in')
     }
 })
 
 app.get(('/new_cluck'), (req, res) => {
+    console.log(req.body.username)
     let username = req.cookies.username || '' 
 
-    if (username != '' && username != undefined) {
+    if (username && username != undefined) {
         res.render('clucks/new')
     } else {
         res.redirect('sign_in')
@@ -85,7 +87,7 @@ app.get('/submit_cluck', (req, res) => {
     clucks = req.body
     console.log("clucks inside submit_cluck", clucks)
     // unsure of where the request came from, from here
-    res.redirect('clucks')
+    res.redirect('/clucks')
 })
 
 app.get('/sign_out', (req, res) => {

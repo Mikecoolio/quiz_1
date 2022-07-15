@@ -21,8 +21,7 @@ router.post('/new_cluck', (req, res) => {
     })
 })
 
-router.get('/', (req, res) => {
-    console.log("req.body inside new_cluck", req.body)
+router.get('/clucks', (req, res) => {
     knex('clucks')
     .orderBy('created_at', 'desc')
     .then(clucks => {
