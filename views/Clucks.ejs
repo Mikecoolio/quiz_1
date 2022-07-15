@@ -1,0 +1,14 @@
+<%- include('../views/partials/header.ejs') %> 
+<h1>Clucks</h1>  
+<div>
+    <% for (let cluck of clucks) { %> 
+        <div class="card-body">
+            <img src="/public/css/images/chick.jpg" alt="Baby chicken">
+              <h5 class="card-title"><%- cluck.username %><h5>
+                <h5><%- cluck.updated_at %></h5>
+            </a>
+            <p class="card-text"><%- cluck.content %></p>
+        </div>
+    <% } %>
+</div> -->
+<%- include('../views/partials/footer.ejs') %> 
